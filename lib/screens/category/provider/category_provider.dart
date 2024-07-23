@@ -94,7 +94,7 @@ class CategoryProvider extends ChangeNotifier {
     }
 
     }catch(e){
-
+        throw Exception(e.toString());
     }
   }
 

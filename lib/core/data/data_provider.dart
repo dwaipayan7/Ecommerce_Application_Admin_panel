@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../models/api_response.dart';
 import '../../models/coupon.dart';
 import '../../models/my_notification.dart';
@@ -63,6 +65,28 @@ class DataProvider extends ChangeNotifier {
 
 
   //TODO: should complete getAllCategory
+
+  Future<List<Category>> getAllCategory({bool showSnack = false}) async {
+    try {
+      Response response = await service.getItems(endpointUrl: 'categories');
+      if (response.statusCode == 200) {
+        ApiResponse<List<Category>> apiResponse = ApiResponse<List<Category>>.fromJson(
+          response.body,
+              (json) => (json as List).map((item) => Category.fromJson(item)).toList(),
+        );
+        _allCategories = apiResponse.data ?? [];
+        _filteredCategories = List.from(_allCategories);
+        notifyListeners();
+      } else {
+        if (showSnack) SnackBarHelper.showErrorSnackBar('Failed to load categories');
+      }
+    } catch (e) {
+      if (showSnack) SnackBarHelper.showErrorSnackBar(e.toString());
+      rethrow;
+    }
+    return _filteredCategories;
+  }
+}
 
 
   //TODO: should complete filterCategories
@@ -133,4 +157,4 @@ class DataProvider extends ChangeNotifier {
   //TODO: should complete calculateProductWithQuantity
 
 
-}
+
