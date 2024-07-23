@@ -26,8 +26,6 @@ class CategoryProvider extends ChangeNotifier {
   CategoryProvider(this._dataProvider);
 
   addCategory() async{
-    //TODO: should complete addCategory
-
     try{
       if(selectedImage == null){
         SnackBarHelper.showErrorSnackBar('Please choose an Image');
@@ -66,6 +64,39 @@ class CategoryProvider extends ChangeNotifier {
 
 
   //TODO: should complete updateCategory
+
+  updateCategory() async{
+    try{
+      Map<String, dynamic> fromDataMap = {
+        'name': categoryNameCtrl.text,
+        'image': categoryForUpdate?.image ?? ' ',
+      };
+
+      final FormData form = await createFormData(imgXFile: imgXFile, formData: fromDataMap);
+
+      final response = await service.updateItem(endpointUrl: 'category', itemId: form.toString(), itemData: categoryForUpdate?.sId ?? '');
+      if(response.isOk){
+
+        ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
+
+        if(apiResponse.success == true){
+          clearFields();
+
+          SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
+          log('category added' as num);
+
+          _dataProvider.getAllCategory();
+      }else{
+          SnackBarHelper.showErrorSnackBar('Failed to added category: ${apiResponse.message}');
+      }
+    }else{
+    SnackBarHelper.showErrorSnackBar('Error: ${response.body?['message'] ?? response.statusText}');
+    }
+
+    }catch(e){
+
+    }
+  }
 
 
 
