@@ -6,6 +6,8 @@ import 'components/side_menu.dart';
 
 
 class MainScreen extends StatelessWidget {
+  const MainScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     context.dataProvider;
@@ -14,7 +16,7 @@ class MainScreen extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
+            const Expanded(
               child: SideMenu(),
             ),
             Consumer<MainScreenProvider>(

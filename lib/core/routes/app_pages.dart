@@ -10,7 +10,7 @@ class AppPages {
     GetPage(
       name: HOME,
       fullscreenDialog: true,
-      page: () => MainScreen()
+      page: () => const MainScreen()
     ),
 
   ];
